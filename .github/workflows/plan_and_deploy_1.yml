@@ -1,0 +1,89 @@
+name: Plan & Deploy Infrastructure v1
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/**'
+      - 'vars/**'
+      - '.github/workflows/plan_and_deploy.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'terraform/**'
+      - 'vars/**'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Type 'true' for apply changes!
+        required: false
+        default: 'true'
+
+jobs:
+  terraform-plan: # Job name
+    runs-on: ubuntu-latest # The job will run on the latest version of Ubuntu
+    
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.0
+
+      - name: Terraform Init
+        run: terraform init -backend-config="bucket=${{ env.AWS_S3_BUCKET }}" -backend-config="key=dev.tfstate" -backend-config="region=us-east-1"
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -var-file="../vars/common.tfvars" -var-file="../vars/dev.tfvars" -out=tfplan
+
+  terraform-apply:
+      runs-on: ubuntu-latest
+      needs: terraform-plan
+      if: github.event.inputs.apply == 'true'
+
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+
+      defaults:
+        run:
+          shell: bash
+          working-directory: ./terraform
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+  
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v1
+          with:
+            terraform_version: 1.9.0
+  
+        - name: Terraform Init
+          run: terraform init -backend-config="bucket=${{ env.AWS_S3_BUCKET }}" -backend-config="key=dev.tfstate" -backend-config="region=us-east-1"
+
+        - name: Terraform Validate
+          run: terraform validate          
+      
+        - name: Terraform Plan
+          run: terraform plan -var-file="../vars/common.tfvars" -var-file="../vars/dev.tfvars" -out=tfplan
+
+        - name: Terraform Apply
+          run: terraform apply tfplan
