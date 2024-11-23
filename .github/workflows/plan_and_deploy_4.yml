@@ -7,7 +7,7 @@ on:
     paths:
       - 'terraform/**'
       - 'vars/**'
-      - '.github/workflows/plan_and_deploy_4.yml'
+      # - '.github/workflows/plan_and_deploy_4.yml'
   pull_request:
     branches:
       - main
@@ -63,6 +63,9 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate
+
+      - name: Terraform Format
+        run: terraform format
 
       - name: Terraform Plan
         run: terraform plan -var-file="../vars/common.tfvars" -var-file="../vars/${{ env.ENVIRONMENT }}.tfvars" -out=tfplan
