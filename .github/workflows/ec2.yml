@@ -1,11 +1,11 @@
-name: Create S3
+name: Create ec2
 
 on:
   push:
     branches:
       - main
     paths:
-      - 's3/**' # Запускатиметься лише при зміні в папці s3
+      - 'ec2/**' # Запускатиметься лише при зміні в папці s3
 
   workflow_dispatch:
 
