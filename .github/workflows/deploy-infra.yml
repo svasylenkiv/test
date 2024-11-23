@@ -1,108 +1,30 @@
-name: Terraform Workflow
+name: Deploy Infrastructure
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Select the environment to deploy (dev, stg, hfx, prd)"
-        required: true
-        type: choice
-        options:
-          - dev
-          - stg
-          - hfx
-          - prd
 
 jobs:
-  # Job for formatting and planning on every push to main
-  plan:
+  terraform:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-
     steps:
-    # Checkout the repository
-    - name: Checkout Repository
+    - name: Checkout Code
       uses: actions/checkout@v3
 
-    # Set up Terraform
-    - name: Set up Terraform
+    - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        terraform_version: 1.5.7
+        terraform_version: 1.6.0
 
-    # Terraform Format Check
-    - name: Check Terraform Format
-      run: terraform fmt -check -recursive
-
-    # Initialize Terraform
     - name: Terraform Init
       run: terraform init
 
-    # Select Terraform workspace (based on main environment assumption)
-    - name: Select Workspace
-      run: |
-        terraform workspace select main || terraform workspace new main
-
-    # Terraform Plan
     - name: Terraform Plan
-      run: terraform plan
-      env:
-        TF_VAR_environment: main
+      run: terraform plan -var-file="variables.dev.tfvars"
 
-  # Job for manual deployment
-  deploy:
-    runs-on: ubuntu-latest
-    needs: plan
-    if: ${{ github.event_name == 'workflow_dispatch' }}
-
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-    # Checkout the repository
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
-    # Set up Terraform
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.5.7
-
-    # Configure AWS credentials
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v3
-      with:
-        role-to-assume: ${{ secrets.AWS_ROLE }}
-        aws-region: ${{ secrets.AWS_REGION }}
-
-    # Terraform Format Check
-    - name: Check Terraform Format
-      run: terraform fmt -check -recursive
-
-    # Initialize Terraform
-    - name: Terraform Init
-      run: terraform init
-
-    # Select Terraform workspace (based on input environment)
-    - name: Select Workspace
-      run: |
-        terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
-
-    # Terraform Plan
-    - name: Terraform Plan
-      run: terraform plan -var="environment=${{ github.event.inputs.environment }}"
-      env:
-        TF_VAR_environment: ${{ github.event.inputs.environment }}
-
-    # Terraform Apply
     - name: Terraform Apply
-      run: terraform apply -auto-approve -var="environment=${{ github.event.inputs.environment }}"
+      run: terraform apply -var-file="variables.dev.tfvars" -auto-approve
       env:
-        TF_VAR_environment: ${{ github.event.inputs.environment }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
