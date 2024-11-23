@@ -65,7 +65,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Format
-        run: terraform format
+        run: terraform fmt
 
       - name: Terraform Plan
         run: terraform plan -var-file="../vars/common.tfvars" -var-file="../vars/${{ env.ENVIRONMENT }}.tfvars" -out=tfplan
