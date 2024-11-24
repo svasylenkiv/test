@@ -8,7 +8,3 @@ variable "aws_region" {
   type        = string
   description = "AWS region for the S3 bucket"
 }
-
-variable "env" {
-  type = string
-}
