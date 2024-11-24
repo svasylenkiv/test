@@ -1,18 +1,15 @@
-name: Plan & Deploy Infrastructure v1
+name: 2. S3
 on:
   push:
     branches:
       - main
     paths:
-      - 'terraform/**'
-      - 'vars/**'
-      - '.github/workflows/plan_and_deploy.yml'
+      - 'terraform_s3_bucket/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'terraform/**'
-      - 'vars/**'
+      - 'terraform_s3_bucket/**'
   workflow_dispatch:
     inputs:
       apply:
@@ -27,12 +24,11 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
 
     defaults:
       run:
         shell: bash
-        working-directory: ./terraform
+        working-directory: ./terraform_s3_bucket
 
     steps:
       - name: Checkout code
@@ -44,13 +40,13 @@ jobs:
           terraform_version: 1.9.0
 
       - name: Terraform Init
-        run: terraform init -backend-config="bucket=${{ secrets.AWS_S3_BUCKET }}" -backend-config="key=dev.tfstate" -backend-config="region=us-east-1"
+        run: terraform init
 
       - name: Terraform Validate
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var-file="../vars/common.tfvars" -var-file="../vars/dev.tfvars" -out=tfplan
+        run: terraform plan
 
   terraform-apply:
       runs-on: ubuntu-latest
@@ -60,12 +56,11 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
 
       defaults:
         run:
           shell: bash
-          working-directory: ./terraform
+          working-directory: ./terraform_s3_bucket
 
       steps:
         - name: Checkout code
@@ -77,13 +72,13 @@ jobs:
             terraform_version: 1.9.0
   
         - name: Terraform Init
-          run: terraform init -backend-config="bucket=${{ secrets.AWS_S3_BUCKET }}" -backend-config="key=dev.tfstate" -backend-config="region=us-east-1"
+          run: terraform init
 
         - name: Terraform Validate
           run: terraform validate          
       
         - name: Terraform Plan
-          run: terraform plan -var-file="../vars/common.tfvars" -var-file="../vars/dev.tfvars" -out=tfplan
+          run: terraform plan
 
         - name: Terraform Apply
-          run: terraform apply tfplan
+          run: terraform apply
