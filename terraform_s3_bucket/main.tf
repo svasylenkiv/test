@@ -4,7 +4,7 @@ provider "aws" {
 
 # Генерація випадкового рядка
 resource "random_string" "bucket_suffix" {
-  length  = 6  # Довжина випадкового рядка
+  length  = 6 # Довжина випадкового рядка
   upper   = false
   lower   = true
   special = false
@@ -13,7 +13,6 @@ resource "random_string" "bucket_suffix" {
 # Оголошення бакета з випадковим суфіксом
 resource "aws_s3_bucket" "common_bucket" {
   bucket = "${var.project}-common-terraform-bucket-${random_string.bucket_suffix.result}"
-  acl    = "private"
 
   tags = {
     Name    = "${var.project} Common Terraform Bucket"
