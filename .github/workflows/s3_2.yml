@@ -45,9 +45,11 @@ jobs:
       env:
         TF_VAR_project: ${{ env.PROJECT }}
         TF_VAR_aws_region: ${{ env.AWS_REGION }}
+        TF_VAR_env: ${{ env.ENV }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve -var-file="common.tfvars"
       env:
         TF_VAR_project: ${{ env.PROJECT }}
         TF_VAR_aws_region: ${{ env.AWS_REGION }}
+        TF_VAR_env: ${{ env.ENV }}

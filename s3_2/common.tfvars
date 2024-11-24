@@ -1,2 +1,2 @@
-env     = "dev"
-project = "new"
+env     = "stg"
+project = "bird"
