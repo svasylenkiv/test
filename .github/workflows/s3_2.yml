@@ -15,12 +15,12 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      # AWS_REGION: ${{ vars.AWS_REGION }}
-      # PROJECT: ${{ vars.PROJECT }}
-      # ENV: ${{ vars.ENV }}
-      # TF_VAR_project: ${{ vars.PROJECT }}
-      # TF_VAR_aws_region: ${{ vars.AWS_REGION }}
-      # TF_VAR_env: ${{ vars.ENV }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      PROJECT: ${{ vars.PROJECT }}
+      ENV: ${{ vars.ENV }}
+      TF_VAR_project: ${{ vars.PROJECT }}
+      TF_VAR_aws_region: ${{ vars.AWS_REGION }}
+      TF_VAR_env: ${{ vars.ENV }}
 
     defaults:
       run:
@@ -55,12 +55,3 @@ jobs:
 
     - name: Terraform Apply
       run: terraform apply -var-file="common.tfvars" -auto-approve
-
-    - name: Debug Environment Variables
-      run: |
-        echo "PROJECT=${PROJECT}"
-        echo "ENV=${ENV}"
-        echo "AWS_REGION=${AWS_REGION}"
-        echo "project=${project}"
-        echo "env=${env}"
-        echo "aws_region=${aws_region}"
