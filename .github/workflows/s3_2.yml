@@ -41,13 +41,13 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan -var-file="common.tfvars"
       env:
         TF_VAR_project: ${{ env.PROJECT }}
         TF_VAR_aws_region: ${{ env.AWS_REGION }}
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -var-file="common.tfvars"
       env:
         TF_VAR_project: ${{ env.PROJECT }}
         TF_VAR_aws_region: ${{ env.AWS_REGION }}
