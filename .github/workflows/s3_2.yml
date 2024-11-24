@@ -21,7 +21,7 @@ jobs:
       # TF_VAR_project: ${{ vars.PROJECT }}
       # TF_VAR_aws_region: ${{ vars.AWS_REGION }}
       # TF_VAR_env: ${{ vars.ENV }}
-      
+
     defaults:
       run:
         shell: bash
@@ -61,3 +61,6 @@ jobs:
         echo "PROJECT=${PROJECT}"
         echo "ENV=${ENV}"
         echo "AWS_REGION=${AWS_REGION}"
+        echo "project=${project}"
+        echo "env=${env}"
+        echo "aws_region=${aws_region}"
