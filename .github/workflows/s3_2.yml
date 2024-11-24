@@ -10,7 +10,7 @@ on:
 
 jobs:
   Plan:
-    name: 'Plan'
+    name: 'Deploy S3 Bucket'
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
