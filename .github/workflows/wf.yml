@@ -1,4 +1,4 @@
-name: S3 Bucket Terraform Apply Workflow
+name: 1. S3 Bucket Terraform Apply Workflow
 
 on:
   push:
