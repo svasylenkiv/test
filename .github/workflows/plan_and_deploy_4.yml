@@ -17,13 +17,13 @@ on:
   workflow_dispatch:
     inputs:
       apply:
-        description: Select 'true' to apply changes!
+        description: Select "true" to apply changes!
         required: true
         type: choice
         options:
-          - false
           - true
-        default: 'false'
+          - false
+        default: "false"
       environment:
         description: Select the environment
         required: true
