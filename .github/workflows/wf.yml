@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'terraform-s3_bucket/**'
+      - 'terraform_s3_bucket/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'terraform-s3_bucket/**'
+      - 'terraform_s3_bucket/**'
   workflow_dispatch:
     inputs:
       apply:
