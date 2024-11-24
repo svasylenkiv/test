@@ -1,1 +1,2 @@
-env = "common"
+env     = "common"
+project = "cord"
