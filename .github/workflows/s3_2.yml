@@ -18,6 +18,7 @@ jobs:
       AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
       AWS_REGION: ${{ vars.AWS_REGION }}
       PROJECT: ${{ vars.PROJECT }}
+      ENV: ${{ vars.ENV }}
 
     defaults:
       run:
@@ -36,6 +37,7 @@ jobs:
       env:
         TF_VAR_project: ${{ env.PROJECT }}
         TF_VAR_aws_region: ${{ env.AWS_REGION }}
+        TF_VAR_env: ${{ env.ENV }}
     
     - name: Terraform Validate
       run: terraform validate
