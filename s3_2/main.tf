@@ -12,10 +12,10 @@ resource "random_string" "bucket_suffix" {
 
 # Оголошення бакета з випадковим суфіксом
 resource "aws_s3_bucket" "common_bucket" {
-  bucket = "${var.project}-common-terraform-bucket-${random_string.bucket_suffix.result}"
+  bucket = "${var.project}-var.env-terraform-bucket-${random_string.bucket_suffix.result}"
 
   tags = {
-    Name    = "${var.project} Common Terraform Bucket"
-    Project = var.project
+    name    = "${var.project} var.env Terraform Bucket"
+    project = var.project
   }
 }
