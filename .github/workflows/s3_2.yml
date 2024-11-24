@@ -58,3 +58,8 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -var-file="common.tfvars" -auto-approve
 
+    - name: Debug Environment Variables
+      run: |
+        echo "PROJECT=${PROJECT}"
+        echo "ENV=${ENV}"
+        echo "AWS_REGION=${AWS_REGION}"
