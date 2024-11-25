@@ -155,4 +155,6 @@ jobs:
             TF_VAR_environment: ${{ github.event.inputs.environment }}
 
         - name: Terraform Destroy
-          run: terraform destroy
+          run: terraform destroy -var-file="vars/${{ github.event.inputs.environment }}.tfvars" -auto-approve
+          env:
+            TF_VAR_environment: ${{ github.event.inputs.environment }}
