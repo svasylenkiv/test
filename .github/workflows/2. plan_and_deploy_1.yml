@@ -23,6 +23,7 @@ on:
       environment:
         description: Select the environment
         required: true
+        default: 'dev'
         type: choice
         options:
           - dev
