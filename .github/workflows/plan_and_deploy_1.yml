@@ -16,6 +16,9 @@ on:
         description: Type 'true' for apply changes!
         required: true
         default: 'false'
+        type: choice
+        options:
+          - dev
       environment:
         description: Select the environment
         required: true
