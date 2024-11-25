@@ -2,7 +2,7 @@ data "aws_ami" "ubuntu" {
   owners      = ["amazon"]
   most_recent = true
   filter {
-    name   = "arc_xhitecture"
+    name   = "architecture"
     values = ["x86_64"]
   }
   filter {
