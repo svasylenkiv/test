@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "common_bucket" {
   bucket = "${var.project}-${var.env}-terraform-bucket-${random_string.bucket_suffix.result}"
 
   tags = {
-    name    = "${var.project} ${var.env} Terraform Bucket"
+    name    = "${var.project}-${var.env}-terraform-bucket"
     project = var.project
   }
 }

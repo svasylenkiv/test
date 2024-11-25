@@ -1,2 +1,2 @@
-env     = "stg"
-project = "bird"
+env     = "common"
+project = "nord"
