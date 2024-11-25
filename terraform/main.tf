@@ -20,3 +20,16 @@ module "vpc" {
     env     = var.environment
   }
 }
+
+module "s3" {
+  source      = "./modules/s3"
+  project     = var.project
+  environment = var.environment
+  cidr_block  = var.cidr_block
+
+  tags = {
+    name    = "${var.project}-${var.environment}-vpc"
+    project = ${var.project}
+    env     = ${var.environment}
+  }
+}
