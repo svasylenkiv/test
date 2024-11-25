@@ -14,7 +14,7 @@ on:
     inputs:
       action:
         description: Choose the action (apply or destroy)
-        required: true
+        required: false
         default: ' '
         type: choice
         options:
