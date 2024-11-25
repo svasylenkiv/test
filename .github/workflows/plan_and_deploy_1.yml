@@ -18,7 +18,8 @@ on:
         default: 'false'
         type: choice
         options:
-          - dev
+          - true
+          - false
       environment:
         description: Select the environment
         required: true
