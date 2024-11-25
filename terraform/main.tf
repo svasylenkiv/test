@@ -1,18 +1,35 @@
-data "aws_ami" "ubuntu" {
-  owners      = ["amazon"]
-  most_recent = true
-  filter {
-    name   = "arc_xhitecture"
-    values = ["x86_64"]
-  }
-  filter {
-    name   = "name"
-    values = ["al2023-ami-2023*"]
+terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
 }
 
-resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+module "vpc" {
+  source      = "./modules/vpc"
+  project     = var.project
+  environment = var.environment
+  cidr_block  = var.cidr_block
 
+  tags = {
+    name    = "${var.project}-${var.environment}-vpc"
+    project = var.project
+    env     = var.environment
+  }
+}
+
+module "s3" {
+  source      = "./modules/s3"
+  project     = var.project
+  environment = var.environment
+  cidr_block  = var.cidr_block
+
+  tags = {
+    name    = "${var.project}-${var.environment}-vpc"
+    project = ${var.project}
+    env     = ${var.environment}
+  }
 }
