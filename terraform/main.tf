@@ -1,24 +1,22 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+module "vpc" {
+  source      = "./modules/vpc"
+  project     = var.project
+  environment = var.environment
+  cidr_block  = var.cidr_block
 
   tags = {
-    Name = "SRV-${var.env}-01"
+    name    = "${var.project}-${var.environment}-vpc"
+    project = var.project
+    env     = var.environment
   }
 }

@@ -1,15 +1,15 @@
-name: 2. Deploy Infra
+name: Manage Infra
 on:
   push:
     branches:
       - main
     paths:
-      - 'ec2/**'
+      - 'terraform/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'ec2/**'
+      - 'terraform/**'
   workflow_dispatch:
     inputs:
       action:
@@ -50,7 +50,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./ec2
+        working-directory: ./terraform
 
     steps:
       - name: Checkout code
@@ -90,7 +90,7 @@ jobs:
       defaults:
         run:
           shell: bash
-          working-directory: ./ec2
+          working-directory: ./terraform
 
       steps:
         - name: Checkout code
@@ -130,7 +130,7 @@ jobs:
       defaults:
         run:
           shell: bash
-          working-directory: ./ec2
+          working-directory: ./terraform
 
       steps:
         - name: Checkout code
