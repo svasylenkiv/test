@@ -15,12 +15,12 @@ on:
       action:
         description: Choose the action (apply or destroy)
         required: false
-        default: ' '
+        default: plan
         type: choice
         options:
           - apply
           - destroy
-          - ' '
+          - plan
 
       environment:
         description: Select the environment
