@@ -18,19 +18,21 @@ on:
         default: ' '
         type: choice
         options:
-          - ' '
           - apply
           - destroy
+          - ' '
+
       environment:
         description: Select the environment
         required: true
-        default: 'dev'
+        default: ' '
         type: choice
         options:
           - dev
           - stg
           - prd
           - hfx
+          - ' '
       confirm_destroy:
         description: Confirm destroy action (type 'yes' to proceed)
         required: false
