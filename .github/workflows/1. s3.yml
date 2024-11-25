@@ -1,10 +1,10 @@
-name: 2. S3_2
+name: 1. Create S3 Bucket
 on:
   push:
     branches:
       - main
     paths:
-      - 's3_2/**' # Запускатиметься лише при зміні в папці s3
+      - 's3/**' # Запускатиметься лише при зміні в папці s3
 
   workflow_dispatch:
 
@@ -19,7 +19,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./s3_2
+        working-directory: ./s3
     
     steps:
     - name: Checkout
@@ -41,7 +41,4 @@ jobs:
       run: terraform plan -var-file="common.tfvars"
 
     - name: Terraform Apply
-      run: | 
-        terraform apply -var-file="common.tfvars" -auto-approve
-        BUCKET_NAME=$(terraform output -raw bucket_name)
-        echo "AWS_S3_BUCKET=$BUCKET_NAME" >> $GITHUB_ENV
+      run: terraform apply -var-file="common.tfvars" -auto-approve

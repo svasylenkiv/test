@@ -1,2 +1,0 @@
-env = "prd"
-bucket = "terra"

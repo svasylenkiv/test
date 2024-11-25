@@ -1,2 +1,0 @@
-env = "stg"
-bucket = "terra"
