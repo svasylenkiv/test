@@ -53,8 +53,7 @@ jobs:
           terraform_version: latest
 
       - name: Terraform Init
-        # run: terraform init -backend-config="bucket=${{ vars.AWS_S3_BUCKET }}" -backend-config="key=${{ github.event.inputs.environment }}/terraform.tfstate" -backend-config="region=${{ secrets.AWS_REGION }}"
-        run: terraform init -backend-config="bucket=${{ vars.AWS_S3_BUCKET }}" -backend-config="key=${{ github.event.inputs.environment }}/terraform.tfstate" -backend-config="region=${{ fromJson(file('vars/${{ github.event.inputs.environment }}.tfvars')).aws_region }}"
+        run: terraform init -backend-config="bucket=${{ vars.AWS_S3_BUCKET }}" -backend-config="key=${{ github.event.inputs.environment }}/terraform.tfstate" -backend-config="region=${{ vars.AWS_REGION }}"
         env:
           TF_VAR_environment: ${{ github.event.inputs.environment }}
 
