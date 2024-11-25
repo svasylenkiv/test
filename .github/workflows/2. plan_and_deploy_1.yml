@@ -15,9 +15,10 @@ on:
       action:
         description: Choose the action (apply or destroy)
         required: true
-        default: 'choose'
+        default: ' '
         type: choice
         options:
+          - ' '
           - apply
           - destroy
       environment:
